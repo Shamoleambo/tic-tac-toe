@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function Player({ name, symbol }) {
+export default function Player({ name, symbol, activePlayer }) {
   const [playerName, setPlayerName] = useState(name)
   const [editMode, setEditMode] = useState(false)
 
@@ -12,10 +12,14 @@ export default function Player({ name, symbol }) {
     setEditMode((prevState) => !prevState)
   }
   return (
-    <li>
+    <li className={activePlayer === symbol ? 'active' : ''}>
       <span className='player'>
         {editMode === true ? (
-          <input type='text' onChange={handlePlayerName} value={playerName}></input>
+          <input
+            type='text'
+            onChange={handlePlayerName}
+            value={playerName}
+          ></input>
         ) : (
           <span className='player-name'>{playerName}</span>
         )}
