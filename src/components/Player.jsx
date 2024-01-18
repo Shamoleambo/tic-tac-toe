@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function Player({ name, symbol, activePlayer }) {
+export default function Player({ name, symbol, activePlayer, onEditName }) {
   const [playerName, setPlayerName] = useState(name)
   const [editMode, setEditMode] = useState(false)
 
@@ -10,6 +10,7 @@ export default function Player({ name, symbol, activePlayer }) {
 
   const handleEditClick = () => {
     setEditMode((prevState) => !prevState)
+    onEditName(symbol, playerName)
   }
   return (
     <li className={activePlayer === symbol ? 'active' : ''}>
