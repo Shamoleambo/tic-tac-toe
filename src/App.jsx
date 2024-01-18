@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Player from './components/Player'
 import GameBoard from './components/GameBoard'
 import Logs from './components/Logs'
@@ -13,6 +13,28 @@ function deriveActivePlayer(gameTurns) {
 
 function App() {
   const [gameTurns, setGameTurns] = useState([])
+
+  useEffect(() => {
+    let win = false
+    WINNING_COMBINATIONS.forEach((winCondition) => {
+      let checkArray = gameTurns.filter(
+        (turn) =>
+          (turn.square.row === winCondition[0].row &&
+            turn.square.col === winCondition[0].col) ||
+          (turn.square.row === winCondition[1].row &&
+            turn.square.col === winCondition[1].col) ||
+          (turn.square.row === winCondition[2].row &&
+            turn.square.col === winCondition[2].col)
+      )
+
+      if (checkArray.length === 3) {
+        win =
+          checkArray.every((play) => play.player === 'X') ||
+          checkArray.every((play) => play.player === 'O')
+          if (win) console.log('YOU WIN MOTHERFUCKER!!')
+      }
+    })
+  })
 
   const currentPlayer = deriveActivePlayer(gameTurns)
 
