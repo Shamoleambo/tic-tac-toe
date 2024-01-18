@@ -5,7 +5,7 @@ import Logs from './components/Logs'
 import GameOver from './components/GameOver'
 import { WINNING_COMBINATIONS } from './winning-combinations'
 
-const initialGameBoard = [
+const INITIAL_GAMEBOARD = [
   [null, null, null],
   [null, null, null],
   [null, null, null]
@@ -35,7 +35,7 @@ function deriveWinnerFrom(gameBoard) {
 }
 
 function getGameBoardFrom(gameTurns) {
-  let gameBoard = [...initialGameBoard.map((array) => [...array])]
+  let gameBoard = [...INITIAL_GAMEBOARD.map((array) => [...array])]
   for (let turn of gameTurns) {
     gameBoard[turn.square.row][turn.square.col] = turn.player
   }
