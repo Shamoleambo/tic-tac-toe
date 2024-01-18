@@ -3,11 +3,17 @@ import Player from './components/Player'
 import GameBoard from './components/GameBoard'
 import Logs from './components/Logs'
 
+function deriveActivePlayer(gameTurns) {
+  let currentPlayer = 'X'
+  if (gameTurns.length > 0 && gameTurns[0].player === 'X') currentPlayer = 'O'
+
+  return currentPlayer
+}
+
 function App() {
   const [gameTurns, setGameTurns] = useState([])
 
-  let currentPlayer = 'X'
-  if (gameTurns.length > 0 && gameTurns[0].player === 'X') currentPlayer = 'O'
+  const currentPlayer = deriveActivePlayer(gameTurns)
 
   function handleSquarePlayer(rowIndex, colIndex) {
     setGameTurns((prevTurns) => {
