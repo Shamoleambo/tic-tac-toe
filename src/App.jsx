@@ -18,21 +18,7 @@ function deriveActivePlayer(gameTurns) {
   return currentPlayer
 }
 
-function App() {
-  const [gameTurns, setGameTurns] = useState([])
-  const [players, setPlayers] = useState({
-    X: 'Player 1',
-    O: 'Player 2'
-  })
-
-  const currentPlayer = deriveActivePlayer(gameTurns)
-
-  let gameBoard = [...initialGameBoard.map((array) => [...array])]
-  for (let turn of gameTurns) {
-    gameBoard[turn.square.row][turn.square.col] = turn.player
-  }
-
-  let winner
+function deriveWinnerFrom(gameBoard) {
   for (const combination of WINNING_COMBINATIONS) {
     const firstSquareSymbol = gameBoard[combination[0].row][combination[0].col]
     const secondSquareSymbol = gameBoard[combination[1].row][combination[1].col]
@@ -43,9 +29,29 @@ function App() {
       firstSquareSymbol === secondSquareSymbol &&
       firstSquareSymbol === thirdSquareSymbol
     ) {
-      winner = firstSquareSymbol
+      return firstSquareSymbol
     }
   }
+}
+
+function getGameBoardFrom(gameTurns) {
+  let gameBoard = [...initialGameBoard.map((array) => [...array])]
+  for (let turn of gameTurns) {
+    gameBoard[turn.square.row][turn.square.col] = turn.player
+  }
+  return gameBoard
+}
+
+function App() {
+  const [gameTurns, setGameTurns] = useState([])
+  const [players, setPlayers] = useState({
+    X: 'Player 1',
+    O: 'Player 2'
+  })
+
+  const gameBoard = getGameBoardFrom(gameTurns)
+  const currentPlayer = deriveActivePlayer(gameTurns)
+  const winner = deriveWinnerFrom(gameBoard)
   const hasDraw = gameTurns.length === 9 && !winner
 
   function handleSquarePlayer(rowIndex, colIndex) {
@@ -60,7 +66,6 @@ function App() {
   }
 
   function handleRestart() {
-    console.log('setGameTurns')
     setGameTurns([])
   }
 
@@ -88,7 +93,11 @@ function App() {
           />
         </ol>
         {(winner || hasDraw) && (
-          <GameOver winner={winner} onRestart={handleRestart} players={players} />
+          <GameOver
+            winner={winner}
+            onRestart={handleRestart}
+            players={players}
+          />
         )}
         <GameBoard onSelectSquare={handleSquarePlayer} board={gameBoard} />
       </div>
